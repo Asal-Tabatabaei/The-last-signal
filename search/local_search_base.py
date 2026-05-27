@@ -3,17 +3,43 @@ class LocalSearchBase:
         self.world = world
 
     def evaluate(self, state):
-        """
-        TODO: Implement the evaluation (Cost) function.
-        
-        Design a function that calculates the cost of the current sensor placement.
-        Refer to the project documentation for the primary objectives and constraints.
-        
-        Returns:    
-            cost (int or float): The evaluated cost of the state (lower is better).
-        """
-        raise NotImplementedError("Students must implement this method.")
+        covered_targets = set()
 
+        overlap_penalty = 0
+
+        covered_cells = {}
+
+        
+        for (sx, sy) in state:
+
+            for i in range(self.world.rows):
+                for j in range(self.world.cols):
+
+                    dist = abs(sx - i) + abs(sy - j)
+
+                    if dist <= self.world.sensor_range:
+
+                        
+                        covered_cells[(i, j)] = (
+                            covered_cells.get((i, j), 0) + 1
+                        )
+
+                        
+                        if self.world.grid[i][j] == self.world.TARGET:
+                            covered_targets.add((i, j))
+        for count in covered_cells.values():
+
+            if count > 1:
+                overlap_penalty += (count - 1)
+
+        score = (
+            len(covered_targets) * 100
+            - overlap_penalty * 3
+            - len(state) * 2
+        )
+
+        
+        return -score
     def get_neighbor(self, state):
         """
         TODO: Implement the neighbor generation function.
