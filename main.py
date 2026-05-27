@@ -11,6 +11,7 @@ from env.grid_world import GridWorld
 from search.hill_climbing import HillClimbing
 from search.simulated_annealing import SimulatedAnnealing
 from utils import represent
+from search.genetic_algorithm import GeneticAlgorithm
 
 import re
 import matplotlib
@@ -63,7 +64,8 @@ if __name__ == "__main__":
     # TODO: Add your bonus algorithm classes to this list (e.g., GeneticAlgorithm, BeamSearch, TabuSearch)
     algorithm_classes = [
         HillClimbing,
-        SimulatedAnnealing
+        SimulatedAnnealing,
+        GeneticAlgorithm
     ]
 
     # TODO: Initialize and assign the starting state for the experiments.
