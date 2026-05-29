@@ -64,3 +64,5 @@ class LocalSearchBase:
             initial_state (list of tuples): The starting coordinates of the sensors.
         """
         raise NotImplementedError("Students must implement this method.")
+    
+    #test
