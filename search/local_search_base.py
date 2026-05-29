@@ -3,7 +3,12 @@ import random
 class LocalSearchBase:
     def __init__(self, world):
         self.world = world
-
+        self.rows = world.rows
+        self.cols = world.cols
+        self.max_sensors = world.max_sensors
+        self.sensor_range = world.sensor_range
+        self.targets = world.get_targets()
+        
     def evaluate(self, state):
         covered_targets = set()
 
