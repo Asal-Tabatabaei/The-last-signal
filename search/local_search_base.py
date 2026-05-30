@@ -1,7 +1,14 @@
+import random
+
 class LocalSearchBase:
     def __init__(self, world):
         self.world = world
-
+        self.rows = world.rows
+        self.cols = world.cols
+        self.max_sensors = world.max_sensors
+        self.sensor_range = world.sensor_range
+        self.targets = world.get_targets()
+        
     def evaluate(self, state):
         covered_targets = set()
 
@@ -41,16 +48,54 @@ class LocalSearchBase:
         
         return -score
     def get_neighbor(self, state):
-        """
-        TODO: Implement the neighbor generation function.
+
+        neighbor_state = list(state)
+        state_set = set(state)
+
+        possible_operations = []
+
+        if len(neighbor_state) > 0:
+            possible_operations.append("MOVE")
+
+        if len(neighbor_state) < self.max_sensors:
+                    possible_operations.append("ADD")
+
+        if len(neighbor_state) > 1:
+            possible_operations.append("REMOVE")
         
-        Generate a new valid state by applying a local change to the current state.
-        Ensure you include all the required operations mentioned in the project PDF
-        to support a dynamic search space.
+        if not possible_operations:
+            return neighbor_state
         
-        Returns:
-            neighbor_state (list of tuples): The newly generated valid state.
-        """
+        operation = random.choice(possible_operations)
+
+        if operation == "MOVE":
+            idx = random.randint(0, len(neighbor_state) - 1)
+            x, y = neighbor_state[idx]
+
+            directions = [(-1, -1), (-1, 0), (-1, 1), (0, -1), (0, 1), (1, -1), (1, 0), (1, 1)]
+            random.shuffle(directions)
+                
+            for dx, dy in directions:
+                nx, ny = x + dx, y + dy
+
+                if self.world.is_valid_position(nx, ny) and (nx, ny) not in state_set:
+                    neighbor_state[idx] = (nx, ny)
+                    break
+        elif operation == "ADD":
+            for _ in range(100):
+                nx = random.randint(0, self.rows - 1)
+                ny = random.randint(0, self.cols - 1)
+                if self.world.is_valid_position(nx, ny) and (nx, ny) not in state_set:
+                    neighbor_state.append((nx, ny))
+                    break
+
+        elif operation == "REMOVE":
+            idx = random.randint(0, len(neighbor_state) - 1)
+            neighbor_state.pop(idx)
+                    
+        return neighbor_state
+
+
         raise NotImplementedError("Students must implement this method.")
 
     def initialize_state(self):
