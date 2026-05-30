@@ -10,6 +10,19 @@ class LocalSearchBase:
         self.targets = world.get_targets()
         
     def evaluate(self, state):
+<<<<<<< HEAD
+        """
+        TODO: Implement the evaluation (Cost) function.
+        
+        Design a function that calculates the cost of the current sensor placement.
+        Refer to the project documentation for the primary objectives and constraints.
+        
+        Returns:    
+            cost (int or float): The evaluated cost of the state (lower is better).
+        """
+        raise NotImplementedError("Students must implement this method.")
+
+=======
         covered_targets = set()
 
         overlap_penalty = 0
@@ -47,6 +60,7 @@ class LocalSearchBase:
 
         
         return -score
+>>>>>>> 697989e659a00b46638967e206063f6054c7855f
     def get_neighbor(self, state):
 
         neighbor_state = list(state)
