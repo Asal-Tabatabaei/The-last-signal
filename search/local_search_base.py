@@ -9,33 +9,32 @@ class LocalSearchBase:
         self.sensor_range = world.sensor_range
         self.targets = world.get_targets()
         
-    def evaluate(self, state):
+    def get_cost(self, state):
+
+        if not state:
+            return len(self.targets) * 100 
+
         covered_targets = set()
-
         overlap_penalty = 0
-
+        
         covered_cells = {}
 
-        
         for (sx, sy) in state:
+            min_r = max(0, sx - self.sensor_range)
+            max_r = min(self.rows - 1, sx + self.sensor_range)
+            
+            for i in range(min_r, max_r + 1):
+                remaining_dist = self.sensor_range - abs(sx - i)
+                min_c = max(0, sy - remaining_dist)
+                max_c = min(self.cols - 1, sy + remaining_dist)
+                
+                for j in range(min_c, max_c + 1):
+                    covered_cells[(i, j)] = covered_cells.get((i, j), 0) + 1
+                    
+                    if self.world.grid[i][j] == self.world.TARGET:
+                        covered_targets.add((i, j))
 
-            for i in range(self.world.rows):
-                for j in range(self.world.cols):
-
-                    dist = abs(sx - i) + abs(sy - j)
-
-                    if dist <= self.world.sensor_range:
-
-                        
-                        covered_cells[(i, j)] = (
-                            covered_cells.get((i, j), 0) + 1
-                        )
-
-                        
-                        if self.world.grid[i][j] == self.world.TARGET:
-                            covered_targets.add((i, j))
         for count in covered_cells.values():
-
             if count > 1:
                 overlap_penalty += (count - 1)
 
@@ -44,9 +43,9 @@ class LocalSearchBase:
             - overlap_penalty * 3
             - len(state) * 2
         )
-
         
         return -score
+
     def get_neighbor(self, state):
 
         neighbor_state = list(state)
@@ -58,7 +57,7 @@ class LocalSearchBase:
             possible_operations.append("MOVE")
 
         if len(neighbor_state) < self.max_sensors:
-                    possible_operations.append("ADD")
+            possible_operations.append("ADD")
 
         if len(neighbor_state) > 1:
             possible_operations.append("REMOVE")
@@ -77,10 +76,10 @@ class LocalSearchBase:
                 
             for dx, dy in directions:
                 nx, ny = x + dx, y + dy
-
                 if self.world.is_valid_position(nx, ny) and (nx, ny) not in state_set:
                     neighbor_state[idx] = (nx, ny)
                     break
+                    
         elif operation == "ADD":
             for _ in range(100):
                 nx = random.randint(0, self.rows - 1)
@@ -95,19 +94,6 @@ class LocalSearchBase:
                     
         return neighbor_state
 
-
-        raise NotImplementedError("Students must implement this method.")
-
     def initialize_state(self):
-        """
-        TODO: Generate a valid initial state.
-        
-        Create a starting configuration of sensors within the grid boundaries,
-        respecting the maximum sensor limits and obstacle placements.
-        
-        Returns:
-            initial_state (list of tuples): The starting coordinates of the sensors.
-        """
+
         raise NotImplementedError("Students must implement this method.")
-    
-    #test ehsan
