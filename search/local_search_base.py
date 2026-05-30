@@ -9,7 +9,7 @@ class LocalSearchBase:
         self.sensor_range = world.sensor_range
         self.targets = world.get_targets()
         
-    def get_cost(self, state):
+    def evaluate(self, state):
 
         if not state:
             return len(self.targets) * 100 
@@ -95,5 +95,20 @@ class LocalSearchBase:
         return neighbor_state
 
     def initialize_state(self):
+        
+        num_sensors = random.randint(1, self.max_sensors)
 
-        raise NotImplementedError("Students must implement this method.")
+        initialize_state_set = set()
+
+        attempts = 0
+        while len(initialize_state_set) < num_sensors and attempts < 1000:
+            attempts +=1
+        
+            x = random.randint(0, self.rows - 1)
+            y = random.randint(0, self.cols - 1)
+
+            if self.world.is_valid_position(x, y) and (x,y) not in initialize_state_set:
+                initialize_state_set.add((x,y))
+
+        return list(initialize_state_set) 
+
