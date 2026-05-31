@@ -11,7 +11,9 @@ from env.grid_world import GridWorld
 from search.hill_climbing import HillClimbing
 from search.simulated_annealing import SimulatedAnnealing
 from utils import represent
-from search.genetic_algorithm import GeneticAlgorithm
+
+from search.Genetic_Algorithm import GeneticAlgorithm
+
 
 import re
 import matplotlib
@@ -65,13 +67,14 @@ if __name__ == "__main__":
     algorithm_classes = [
         HillClimbing,
         SimulatedAnnealing,
+
         GeneticAlgorithm
     ]
 
     # TODO: Initialize and assign the starting state for the experiments.
     # Note: For a fair comparison, all algorithms must start from the exact same initial configuration.
     # Hint: You can use the initialize_state() method implemented in your search classes.
-    initial_state = ...
-
+    base_searcher = GeneticAlgorithm(world)
+    initial_state = base_searcher.initialize_state()
     # Run the evaluation pipeline
     run_algorithms(world, initial_state, algorithm_classes)

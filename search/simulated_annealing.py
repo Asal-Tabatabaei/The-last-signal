@@ -25,3 +25,7 @@ class SimulatedAnnealing(LocalSearchBase):
         states_history = [current_state]
 
         T = initial_temp
+
+        
+
+
