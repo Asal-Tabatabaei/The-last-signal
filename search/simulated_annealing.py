@@ -21,10 +21,4 @@ class SimulatedAnnealing(LocalSearchBase):
         states_history : list of lists
         """
         
-<<<<<<< HEAD
-        raise NotImplementedError("Students must implement this method.")
-=======
-        raise NotImplementedError("Students must implement this method.")
 
-        #test
->>>>>>> 697989e659a00b46638967e206063f6054c7855f
