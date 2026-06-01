@@ -67,7 +67,12 @@ if __name__ == "__main__":
 
     # TODO: Add your bonus algorithm classes to this list (e.g., GeneticAlgorithm, BeamSearch, TabuSearch)
     algorithm_classes = [
-HillClimbing    ]
+        HillClimbing,
+        SimulatedAnnealing,
+        BeamSearch,
+        TabuSearch,
+        GeneticAlgorithm
+        ]
 
     # TODO: Initialize and assign the starting state for the experiments.
     # Note: For a fair comparison, all algorithms must start from the exact same initial configuration.
