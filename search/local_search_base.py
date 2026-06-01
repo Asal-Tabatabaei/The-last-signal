@@ -38,13 +38,14 @@ class LocalSearchBase:
             if count > 1:
                 overlap_penalty += (count - 1)
 
-        score = (
-            len(covered_targets) * 100
-            - overlap_penalty * 3
-            - len(state) * 2
-        )
-        
-        return -score
+        uncovered_targets_count = len(self.targets) - len(covered_targets)
+        cost = (
+        uncovered_targets_count * 100 
+        + overlap_penalty * 3          
+        + len(state) * 2              
+    )
+    
+        return cost
 
     def get_neighbor(self, state):
 
